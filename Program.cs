@@ -1,7 +1,16 @@
+using HeinjoFood.Api;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+
+// Add HeinjoFoodApiClient generated with NSwagStudio
+// https://blog.sanderaernouts.com/autogenerate-csharp-api-client-with-nswag
+// https://elanderson.net/2019/11/use-http-client-factory-with-nswag-generated-classes-in-asp-net-core-3/
+var baseAddress = builder.Configuration.GetSection("HeinjoFoodApiUrl").Value;
+builder.Services.AddHttpClient<IHeinjoFoodApiClient, HeinjoFoodApiClient>(client => client.BaseAddress = new Uri(baseAddress));
 
 var app = builder.Build();
 
