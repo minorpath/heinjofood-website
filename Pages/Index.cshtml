@@ -9,9 +9,19 @@
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
-<ul>
-@foreach(var d in Model.Dishes)
-{
-    <li>@d.Id @d.Description</li>
-}
-</ul>
+
+<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    @foreach (var d in Model.Dishes)
+    {
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="@d.ImageUrl" class="card-img-top" alt="..." >
+                <div class="card-body">
+                    <h5 class="card-title">@d.Id</h5>
+                    <p class="card-text">@(d.Description.Length > 100 ? d.Description.Substring(0,100) : d.Description)</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
