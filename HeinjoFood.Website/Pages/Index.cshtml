@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <h5 class="card-title">@d.Id</h5>
                     <p class="card-text">@(d.Description.Length > 100 ? d.Description.Substring(0,100) : d.Description)</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a href="@Model.LinkGenerator.GetPathByPage("/dish", null, new { id = @d.Id })" class="btn btn-primary">Go somewhere</a>
                 </div>
             </div>
         </div>

@@ -4,7 +4,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+});
 
 // Add HeinjoFoodApiClient generated with NSwagStudio
 // https://blog.sanderaernouts.com/autogenerate-csharp-api-client-with-nswag

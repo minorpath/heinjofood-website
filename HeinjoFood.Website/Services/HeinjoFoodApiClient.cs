@@ -21,15 +21,6 @@ namespace HeinjoFood.Api
     {
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> RootEndpointAsync();
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<string> RootEndpointAsync(System.Threading.CancellationToken cancellationToken);
-
-        /// <returns>Success</returns>
-        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Dish>> SearchDishesByTagAsync(string tags);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -46,23 +37,25 @@ namespace HeinjoFood.Api
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Dish>> GetAllDishesAsync(System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>Adds new Dish</summary>
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostNewDishAsync(Dish body);
+        System.Threading.Tasks.Task<Dish> PostNewDishAsync(Dish body);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Adds new Dish</summary>
+        /// <returns>Success</returns>
+        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Dish> PostNewDishAsync(Dish body, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>Success</returns>
+        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Dish> GetDishByIdAsync(string id);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task PostNewDishAsync(Dish body, System.Threading.CancellationToken cancellationToken);
-
-        /// <returns>Success</returns>
-        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task GetDishByIdAsync(string id);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task GetDishByIdAsync(string id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<Dish> GetDishByIdAsync(string id, System.Threading.CancellationToken cancellationToken);
 
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
@@ -72,6 +65,15 @@ namespace HeinjoFood.Api
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task DeleteDishByIdAsync(string id, System.Threading.CancellationToken cancellationToken);
+
+        /// <returns>Success</returns>
+        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> RootEndpointAsync();
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<string> RootEndpointAsync(System.Threading.CancellationToken cancellationToken);
 
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
@@ -122,77 +124,6 @@ namespace HeinjoFood.Api
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<string> RootEndpointAsync()
-        {
-            return RootEndpointAsync(System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <returns>Success</returns>
-        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<string> RootEndpointAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("");
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            var result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
-                            return result_;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new HeinjoApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <returns>Success</returns>
-        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Dish>> SearchDishesByTagAsync(string tags)
         {
             return SearchDishesByTagAsync(tags, System.Threading.CancellationToken.None);
@@ -204,7 +135,7 @@ namespace HeinjoFood.Api
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Dish>> SearchDishesByTagAsync(string tags, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Dish/search?");
+            urlBuilder_.Append("api/dish/search?");
             if (tags != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("tags") + "=").Append(System.Uri.EscapeDataString(ConvertToString(tags, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -283,7 +214,7 @@ namespace HeinjoFood.Api
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Dish>> GetAllDishesAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Dish");
+            urlBuilder_.Append("api/dish");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -344,20 +275,22 @@ namespace HeinjoFood.Api
             }
         }
 
+        /// <summary>Adds new Dish</summary>
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task PostNewDishAsync(Dish body)
+        public System.Threading.Tasks.Task<Dish> PostNewDishAsync(Dish body)
         {
             return PostNewDishAsync(body, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>Adds new Dish</summary>
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task PostNewDishAsync(Dish body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Dish> PostNewDishAsync(Dish body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Dish");
+            urlBuilder_.Append("api/dish");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -369,6 +302,7 @@ namespace HeinjoFood.Api
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -391,9 +325,14 @@ namespace HeinjoFood.Api
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
+                        if (status_ == 201)
                         {
-                            return;
+                            var objectResponse_ = await ReadObjectResponseAsync<Dish>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new HeinjoApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         {
@@ -417,7 +356,7 @@ namespace HeinjoFood.Api
 
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task GetDishByIdAsync(string id)
+        public System.Threading.Tasks.Task<Dish> GetDishByIdAsync(string id)
         {
             return GetDishByIdAsync(id, System.Threading.CancellationToken.None);
         }
@@ -425,13 +364,13 @@ namespace HeinjoFood.Api
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task GetDishByIdAsync(string id, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<Dish> GetDishByIdAsync(string id, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Dish/{id}");
+            urlBuilder_.Append("api/dish/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -441,6 +380,7 @@ namespace HeinjoFood.Api
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
                     request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -465,7 +405,12 @@ namespace HeinjoFood.Api
                         var status_ = (int)response_.StatusCode;
                         if (status_ == 200)
                         {
-                            return;
+                            var objectResponse_ = await ReadObjectResponseAsync<Dish>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new HeinjoApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
                         }
                         else
                         {
@@ -503,7 +448,7 @@ namespace HeinjoFood.Api
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Dish/{id}");
+            urlBuilder_.Append("api/dish/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -561,6 +506,77 @@ namespace HeinjoFood.Api
 
         /// <returns>Success</returns>
         /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<string> RootEndpointAsync()
+        {
+            return RootEndpointAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <returns>Success</returns>
+        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<string> RootEndpointAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append("");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("text/plain"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var result_ = (string)System.Convert.ChangeType(responseData_, typeof(string));
+                            return result_;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new HeinjoApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <returns>Success</returns>
+        /// <exception cref="HeinjoApiException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task GetImageByNameAsync(string fileName)
         {
             return GetImageByNameAsync(fileName, System.Threading.CancellationToken.None);
@@ -575,7 +591,7 @@ namespace HeinjoFood.Api
                 throw new System.ArgumentNullException("fileName");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Image/{fileName}");
+            urlBuilder_.Append("api/image/{fileName}");
             urlBuilder_.Replace("{fileName}", System.Uri.EscapeDataString(ConvertToString(fileName, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -644,7 +660,7 @@ namespace HeinjoFood.Api
         public async System.Threading.Tasks.Task UploadImageAsync(FileParameter file, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append("api/Image");
+            urlBuilder_.Append("api/image");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -818,6 +834,9 @@ namespace HeinjoFood.Api
     {
         [System.Text.Json.Serialization.JsonPropertyName("id")]
         public string Id { get; set; }
+
+        [System.Text.Json.Serialization.JsonPropertyName("title")]
+        public string Title { get; set; }
 
         [System.Text.Json.Serialization.JsonPropertyName("tags")]
         public System.Collections.Generic.ICollection<string> Tags { get; set; }

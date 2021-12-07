@@ -1,0 +1,25 @@
+﻿@page "{id?}"
+@model HeinjoFood.Website.Pages.DishPageModel
+
+@{
+    var dish = Model.Dish ?? new Api.Dish();
+}
+
+
+<h5>@dish.Title</h5>
+@{
+    var tags = dish.Tags ?? new List<string>();
+    foreach (var tag in tags)
+    {
+        <span class="bg-info">@tag</span>
+    }
+}
+<div>@dish.Description</div>
+
+
+@*<h5 class="mt-5">Add new</h5>
+<form method="post">
+    <input asp-for="Title" />
+    <input asp-for="Description" />
+    <button class="btn btn-default">Submit</button>
+</form>*@

@@ -8,11 +8,15 @@ namespace HeinjoFood.Website.Pages
         private readonly ILogger<IndexModel> _logger;
         private readonly IHeinjoFoodApiClient _apiClient;
 
+        public LinkGenerator LinkGenerator { get; }
+
         public IndexModel(ILogger<IndexModel> logger
-            , IHeinjoFoodApiClient apiClient)
+            , IHeinjoFoodApiClient apiClient,
+            LinkGenerator linkGenerator)
         {
             _logger = logger;
             _apiClient = apiClient;
+            LinkGenerator = linkGenerator;
         }
 
         public IList<Dish>? Dishes { get; set; }
