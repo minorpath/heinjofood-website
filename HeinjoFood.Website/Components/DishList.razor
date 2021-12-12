@@ -1,0 +1,23 @@
+﻿@using HeinjoFood.Api
+@inject LinkGenerator linkGenerator
+
+<div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+    @foreach (var d in Dishes)
+    {
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="@d.ImageUrl" class="card-img-top" alt="..." >
+                <div class="card-body">
+                    <h5 class="card-title">@d.Id</h5>
+                    <p class="card-text">@(d.Description.Length > 100 ? d.Description.Substring(0,100) : d.Description)</p>
+                    <a href="@linkGenerator.GetPathByPage("/dish", null, new { id = @d.Id })" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public ICollection<Dish> Dishes { get; set; } = new List<Dish>();
+}
